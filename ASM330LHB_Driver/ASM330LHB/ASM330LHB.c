@@ -6,59 +6,13 @@
  * @param file_descriptor To close driver F.D in case of existing one in the current error.
  * @return Returns -1.
 */
-static inline __u8 ASM330LHB_error(char *message, int file_descriptor){
+__u8 ASM330LHB_error(char *message, int file_descriptor){
     perror(message);
     if (file_descriptor >= 0) //Checks if file descriptor is valid before closing it
         close(file_descriptor);
     return -1;
 }
 
-/**
- * @brief Initializes UART and Configures its attributes
- * @param imu Pointer to the ASM330LHB structure containing UART's file descriptor
- * @return Returns 0 if the read operation was successful, otherwise returns -1.
-*/
-static __u8 ASM330LHB_uartInit(ASM330LHB *imu){
-
-    imu->uart_fd = open(UART_DEV_PATH, O_RDWR);
-    if (imu->uart_fd < 0)
-        return ASM330LHB_error("Error opening UART file descriptor.", imu->uart_fd);
-
-    struct termios options;
-    tcgetattr(imu->uart_fd, &options);
-
-    // Configurar velocidade de transmissão
-    cfsetispeed(&options, B115200);
-    cfsetospeed(&options, B115200);
-
-    // Configurar outros parâmetros da UART
-    options.c_cflag |= (CLOCAL | CREAD);  // Habilitar leitura e escrita
-    options.c_cflag &= ~PARENB;           // Desativar paridade
-    options.c_cflag &= ~CSTOPB;           // 1 bit de parada
-    options.c_cflag &= ~CSIZE;            // Limpar bits de tamanho de caractere
-    options.c_cflag |= CS8;               // 8 bits de dados
-    options.c_lflag &= ~(ICANON | ECHO | ECHOE | ISIG); // Modo crú
-    options.c_oflag &= ~OPOST;            // Desativar processamento de saída
-    options.c_cc[VMIN] = 1;               // Mínimo de bytes a serem lidos
-    options.c_cc[VTIME] = 0;              // Timeout de leitura
-
-    tcsetattr(imu->uart_fd, TCSANOW, &options);
-
-    return 0;
-}
-
-/**
- * @brief Transmits data throught UART
- * @param imu Pointer to the ASM330LHB structure containing UART's file descriptor
- * @param message Message to be sent in UART
- * @return Returns 0 if the read operation was successful, otherwise returns -1.
-*/
-static __u8 ASM330LHB_uartTransmit(ASM330LHB *imu, char* message){
-    int bytes_written = write(imu->uart_fd, message, strlen(message));
-    if (bytes_written < 0) 
-        return ASM330LHB_error("Error writing to UART", imu->uart_fd);
-    return 0;
-}
 
 /**
  * @brief Reads one or more registers of an I2C slave device and verifies the Read operation.
@@ -141,8 +95,8 @@ static __u8 ASM330LHB_i2cInit(ASM330LHB *imu){
 __u8 ASM330LHB_Init(ASM330LHB *imu, __u8 GYRO_ODR, __u8 ACC_ODR, __u8 GYRO_RANGE, __u8 ACC_RANGE){
     if(ASM330LHB_i2cInit(imu) != 0)
         return ASM330LHB_error("Error Initializing I2C", imu->i2c_fd);
-    if(ASM330LHB_uartInit(imu)!=0)
-        return ASM330LHB_error("Error Initializing UART", imu->uart_fd);
+   // if(ASM330LHB_uartInit(imu)!=0)
+     //   return ASM330LHB_error("Error Initializing UART", imu->uart_fd);
 
     /* ACCELEROMETER CONFIGURATION */
     switch (ACC_RANGE){
@@ -281,11 +235,11 @@ __u8 ASM330LHB_Process(ASM330LHB *imu){
     float Roll  = imu->phiHat_rad * RAD_TO_DEG;
     float Pitch = imu->thetaHat_rad * RAD_TO_DEG;
     
-    char data [66];
-    sprintf(data, "Roll-> %.2f degrees\n\rPitch-> %.2f degrees\n\rYaw-> %.2f degrees\n\r", Roll, Pitch, -yaw);
-    if(ASM330LHB_uartTransmit(imu,data) != 0){
+    //char data [66];
+    sprintf(imu->RollPitchYaw, "Roll-> %.2f degrees\n\rPitch-> %.2f degrees\n\rYaw-> %.2f degrees\n\r", Roll, Pitch, -yaw);
+    /*if(ASM330LHB_uartTransmit(imu,data) != 0){
         Status = ASM330LHB_error("Error UART Transmit", imu->uart_fd);
-    }
+    }*/
 	return	Status;
 }
 

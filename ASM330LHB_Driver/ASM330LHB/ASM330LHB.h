@@ -113,10 +113,13 @@ typedef struct imuStruct
     /* KALMAN FILTER */
     float Xant_Roll, Xant_Pitch, Xant_Yaw;
 	float Pant_Roll, Pant_Pitch, Pant_Yaw;
+
+    char RollPitchYaw [66];
+    //float roll, pitch, yaw;
 }ASM330LHB;
 
 /* Function Prototypes */
 __u8 ASM330LHB_Init(ASM330LHB *imu, __u8 GYRO_ODR, __u8 ACC_ODR, __u8 GYRO_RANGE, __u8 ACC_RANGE);
 __u8 ASM330LHB_Process(ASM330LHB *imu);
-
+__u8 ASM330LHB_error(char *message, int file_descriptor) ;
 #endif /* __ASM330LHB_H__ */
