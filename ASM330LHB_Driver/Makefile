@@ -12,7 +12,7 @@ SRC_DIR := /home/marcelo/Desktop/IMU/Coding/ASM330LHB_Driver
 SRCS := $(wildcard $(SRC_DIR)/*.c) $(wildcard $(SRC_DIR)/ASM330LHB/*.c) $(wildcard $(SRC_DIR)/kalman/*.c)
 
 # Nome do executável final
-TARGET := I2C
+TARGET := IMU
 
 # Endereço de destino para copiar o executável
 REMOTE_TARGET := root@10.42.0.133:/IMU
