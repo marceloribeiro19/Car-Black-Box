@@ -1,7 +1,6 @@
 #ifndef __ASM330LHB_H__
 #define __ASM330LHB_H__
 
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -15,9 +14,6 @@
 #include <termios.h>        // Contains POSIX terminal control definitions (UART)
 #include <linux/i2c-dev.h>
 #include <linux/i2c.h>
-
-
-//#include "../main.h"
 
 /*
  *  DEFINES
@@ -39,11 +35,9 @@
 #define ACC_X_REG			0x28
 #define ACC_Y_REG			0x2A
 #define ACC_Z_REG			0x2C
-
 #define GYRO_X_REG			0x22
 #define GYRO_Y_REG			0x24
 #define GYRO_Z_REG			0x26
-
 #define TEMP_REG		 	0x20
 
 /*
@@ -91,8 +85,6 @@
 #define alpha 				0.2f
 #define LSB 				32768	//2^15
 
-
-
 typedef struct imuStruct
 {
     /* kernel driver file descriptors */
@@ -115,7 +107,6 @@ typedef struct imuStruct
 	float Pant_Roll, Pant_Pitch, Pant_Yaw;
 
     char RollPitchYaw [66];
-    //float roll, pitch, yaw;
 }ASM330LHB;
 
 /* Function Prototypes */

@@ -225,7 +225,7 @@ __u8 ASM330LHB_Process(ASM330LHB *imu){
 
     imu->phiHat_rad   = - alpha * phiHat_acc_rad   + (1.0 - alpha) * (imu->phiHat_rad   + SAMPLE_TIME_S * phiDot_rps);
     imu->thetaHat_rad =   alpha * thetaHat_acc_rad + (1.0 - alpha) * (imu->thetaHat_rad + SAMPLE_TIME_S * thetaDot_rps);
-    /*--------------------------------------------*/
+    /*--------------------------------------*/
 
     /* KALMAN FILTERING*/
     imu->phiHat_rad = Kalman_Roll(imu->phiHat_rad,imu);
@@ -235,11 +235,8 @@ __u8 ASM330LHB_Process(ASM330LHB *imu){
     float Roll  = imu->phiHat_rad * RAD_TO_DEG;
     float Pitch = imu->thetaHat_rad * RAD_TO_DEG;
     
-    //char data [66];
     sprintf(imu->RollPitchYaw, "Roll-> %.2f degrees\n\rPitch-> %.2f degrees\n\rYaw-> %.2f degrees\n\r", Roll, Pitch, -yaw);
-    /*if(ASM330LHB_uartTransmit(imu,data) != 0){
-        Status = ASM330LHB_error("Error UART Transmit", imu->uart_fd);
-    }*/
+
 	return	Status;
 }
 
