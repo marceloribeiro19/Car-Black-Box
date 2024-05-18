@@ -15,9 +15,11 @@ The ASM330LHB IMU (Inertial Measurement Unit) is designed for high-performance a
 
 - **High Performance**:
   - Utilizes the advanced capabilities of the ASM330LHB IMU for accurate and reliable orientation tracking.
+  - Sensor fusion is achieved using the Madgwick filter for optimal performance.
+  - Data can be further filtered with a Kalman filter to enhance accuracy and reliability.
 
 - **Integration with Raspberry Pi 4**:
-  - Optimized for seamless operation with the Raspberry Pi 4 with a costume Buildroot Linux Image, leveraging its processing power and storage capabilities.
+  - Optimized for seamless operation with the Raspberry Pi 4 with a custom Buildroot Linux Image, leveraging its processing power and storage capabilities.
 
 ## Technical Specifications
 
@@ -25,6 +27,8 @@ The ASM330LHB IMU (Inertial Measurement Unit) is designed for high-performance a
 - **Data Logging**: Stores up to 15 minutes of orientation data.
 - **Update Frequency**: Continuous real-time updates.
 - **Replay Function**: Allows playback of stored data to replicate vehicle movements.
+- **Sensor Fusion**: Madgwick filter for sensor fusion.
+- **Data Filtering**: Optional Kalman filter for enhanced data accuracy.
 
 ## Usage
 
@@ -44,4 +48,4 @@ The ASM330LHB IMU (Inertial Measurement Unit) is designed for high-performance a
 
 ## Conclusion
 
-The ASM330LHB IMU driver for the Raspberry Pi 4 is a powerful tool for the automotive industry, offering precise orientation tracking and robust data logging capabilities. Its ability to replay vehicle movements in the event of a crash makes it an invaluable asset for accident analysis and safety improvement.
+The ASM330LHB IMU driver for the Raspberry Pi 4 is a powerful tool for the automotive industry, offering precise orientation tracking and robust data logging capabilities. Its ability to replay vehicle movements in the event of a crash makes it an invaluable asset for accident analysis and safety improvement. Sensor fusion with the Madgwick filter and optional Kalman filter for data accuracy ensures reliable performance.
