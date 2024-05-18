@@ -1,0 +1,12 @@
+{
+    "files.associations": {
+        "system_error": "c",
+        "errno.h": "c",
+        "kalman.h": "c",
+        "asm330lhb.h": "c",
+        "random": "c",
+        "cmath": "c",
+        "functional": "c",
+        "madgwick.h": "c"
+    }
+}

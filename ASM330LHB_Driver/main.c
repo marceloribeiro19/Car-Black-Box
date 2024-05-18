@@ -6,10 +6,10 @@
 static void *readIMU(void *arg){
     IMUData *RTOS = (IMUData *)arg;
     
-    ASM330LHB_Init(&(RTOS->imu), GYRO_ODR_1670_HZ, ACC_ODR_1670_HZ, GYRO_RANGE_500_DPS, ACC_RANGE_2_G);
+    ASM330LHB_Init(&(RTOS->imu), GYRO_ODR_208_HZ, ACC_ODR_208_HZ, GYRO_RANGE_125_DPS, ACC_RANGE_2_G);
 
     while(1){
-        if(RTOS->mode == REPLAY)    //In replay mode there is no need to process imu data
+        if(RTOS->mode == REPLAY)                //In replay mode there is no need to process imu data
             break; 
         pthread_mutex_lock(&(RTOS->mutex));
         ASM330LHB_Process(&(RTOS->imu));
@@ -26,13 +26,12 @@ static void *readIMU(void *arg){
  */
 static void *manageStorage(void *arg){
     IMUData *RTOS = (IMUData *)arg;
-
-    char temp[MAX_SIZE / 2];                    // Temporary Buffer to save the twelve most recent hours of data
-    FILE *file = fopen(STORAGE_PATH, "a+");     //  Opens in Read and Write mode
-    if (file == NULL) {
-        perror("Error opening file.\n");
-        return NULL;
-    }
+    ASM330LHB *imu = &RTOS->imu;
+    
+    char temp[MAX_SIZE / 2];                                // Temporary Buffer to save the twelve most recent hours of data
+    FILE *file = fopen(STORAGE_PATH, "a+");                 //  Opens in Read and Write mode
+    if (file == NULL) 
+        ASM330LHB_error("Error opening file.\n",0);
 
     while(1)
     {
@@ -40,9 +39,9 @@ static void *manageStorage(void *arg){
             break;        
         fseek(file, 0, SEEK_END);                           //  Places the file pointer in the end to check the file size
         long int fileSize = ftell(file);                    //  Returns the actual file size
-        if(fileSize < MAX_SIZE){                            
-            fprintf(file, "%s\n", RTOS->imu.RollPitchYaw);  //  Fills the file with data
-        }
+       
+        if(fileSize < MAX_SIZE)                             //  Keeps storing data in the text file                   
+            fprintf(file,"Roll-> %.2f degrees\n\rPitch-> %.2f degrees\n\rYaw-> %.2f degrees\n\r", -imu->roll, imu->pitch, imu->yaw);  
         else{
             printf("THE FILE IS FULL! CLEANING 10 MINUTES OF DATA...\n");              
             fseek(file, MAX_SIZE / 2, SEEK_SET);            //  Places the pointer in the middle of the file
@@ -50,10 +49,8 @@ static void *manageStorage(void *arg){
             fclose(file);
             
             file = fopen(STORAGE_PATH, "w");                //  Re-opens the file in write mode cleaning its content
-            if (file == NULL) {
-                perror("Error opening file.\n");
-                return NULL;
-            }
+            if (file == NULL)
+                ASM330LHB_error("Error opening file.\n",0);
             fwrite(temp, sizeof(char), MAX_SIZE / 2, file); //  Writes in the empty file the stored recent data 
         }
         usleep(5000); 
@@ -70,25 +67,27 @@ static void *manageStorage(void *arg){
  */
 static void *transmitData(void *arg){
     IMUData *RTOS = (IMUData *)arg;
-   
+    ASM330LHB *imu = &RTOS->imu;
+    
+    char uartMessage[66];
     char buffer[68] = {0};
     char line[21] = {0};
     int lineCounter = 0;              
     RTOS->mode = MODE;
-    
-    ASM330LHB_uartInit(&RTOS->imu);
 
-    FILE *file = fopen(STORAGE_PATH, "r");              
+    ASM330LHB_uartInit(imu);
+    FILE *file = fopen(STORAGE_PATH, "r"); 
+          
     if(file == NULL)
-    {
-        perror("Error opening file.\n");
-        return NULL;
-    }
+        ASM330LHB_error("Error opening file.",0);     
     else if(RTOS->mode == REPLAY){
         fseek(file, 0, SEEK_END);                           //  Places the file pointer in the end to check the file size
         long int fileSize = ftell(file);                    //  Returns the actual file size
-        int replayTime = (fileSize * 0.00518) / 66;         //  5.18ms -> 66 bytes, So filesize bytes -> replayTime(seconds)
-        printf(" Replay Time: %dmin and %dsec\n", (replayTime/60), (replayTime%60));        
+        int replayTime = (fileSize * 0.00518) / 66;         //  5.18ms -> 66 bytes, So filesize bytes -> replayTime(seconds)REPLAY
+        if(replayTime < MIN_REPLAY_TIME)
+            ASM330LHB_error("Replay Time is to short.",0);
+        else
+            printf(" Replay Time: %dmin and %dsec\n", (replayTime/60), (replayTime%60));        
         rewind(file); 
     }
 
@@ -97,18 +96,17 @@ static void *transmitData(void *arg){
         switch (RTOS->mode)
         {
             case REAL_TIME:     //Transmits the current IMU data in real-time
-                if(ASM330LHB_uartTransmit(&RTOS->imu, RTOS->imu.RollPitchYaw) != 0){
-                    ASM330LHB_error("Error UART Transmit", RTOS->imu.uart_fd);
-                    return NULL;
-                }
+                sprintf(uartMessage, "Roll-> %.2f degrees\n\rPitch-> %.2f degrees\n\rYaw-> %.2f degrees\n\r", -imu->roll, imu->pitch, imu->yaw);
+                if(ASM330LHB_uartTransmit(imu, uartMessage) != 0)
+                    ASM330LHB_error("Error UART Transmit", imu->uart_fd);
             break;
             case REPLAY:        //Transmits the data stored in the raspberry
                 while (fgets(line, sizeof(line), file) != NULL) 
                 {
-                    strcat(buffer, line);
                     lineCounter++;
+                    strcat(buffer, line);
                     if (lineCounter == 3) {
-                        ASM330LHB_uartTransmit(&RTOS->imu, buffer);
+                        ASM330LHB_uartTransmit(imu, buffer);
                         memset(buffer, 0, sizeof(buffer));
                         lineCounter = 0;
                     }
@@ -156,7 +154,7 @@ static __u8 ASM330LHB_uartInit(ASM330LHB *imu){
 
     imu->uart_fd = open(UART_DEV_PATH, O_RDWR);
     if (imu->uart_fd < 0)
-        return ASM330LHB_error("Error opening UART file descriptor.", imu->uart_fd);
+        ASM330LHB_error("Error opening UART file descriptor.", imu->uart_fd);
 
     struct termios options;
     tcgetattr(imu->uart_fd, &options);
@@ -190,6 +188,6 @@ static __u8 ASM330LHB_uartInit(ASM330LHB *imu){
 static __u8 ASM330LHB_uartTransmit(ASM330LHB *imu, char* message){
     int bytes_written = write(imu->uart_fd, message, strlen(message));
     if (bytes_written < 0) 
-        return ASM330LHB_error("Error writing to UART", imu->uart_fd);
+        ASM330LHB_error("Error writing to UART", imu->uart_fd);
     return 0;
 }

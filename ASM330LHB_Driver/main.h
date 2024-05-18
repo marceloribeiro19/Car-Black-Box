@@ -10,8 +10,9 @@
 #define SIZE_TEST       127413       //Bytes ->Corresponds to 10 seconds of data (Replace by size_test and verify the file clean at 10 seconds)
 #define MAX_SIZE        16000000     //Bytes -> 16MB of space corresponding to 21min of IMU data
 #define NUM_THREADS     3
+#define MIN_REPLAY_TIME 5            //Replays must have at least <MIN_REPLAY_TIME> seconds
 
-#define MODE REPLAY  //REPLAY
+#define MODE REPLAY  //REPLAY   OR   REAL_TIME
 
 static __u8 ASM330LHB_uartTransmit(ASM330LHB *imu, char* message);
 static __u8 ASM330LHB_uartInit(ASM330LHB *imu);

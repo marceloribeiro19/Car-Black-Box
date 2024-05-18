@@ -9,7 +9,7 @@ LDFLAGS += -lm -pthread
 SRC_DIR := /home/marcelo/Desktop/IMU/Coding/ASM330LHB_Driver
 
 # Lista de todos os arquivos .c na pasta de origem
-SRCS := $(wildcard $(SRC_DIR)/*.c) $(wildcard $(SRC_DIR)/ASM330LHB/*.c) $(wildcard $(SRC_DIR)/kalman/*.c)
+SRCS := $(wildcard $(SRC_DIR)/*.c) $(wildcard $(SRC_DIR)/ASM330LHB/*.c) $(wildcard $(SRC_DIR)/kalman/*.c) $(wildcard $(SRC_DIR)/Madgwick_Filter/*.c)
 
 # Nome do executável final
 TARGET := IMU

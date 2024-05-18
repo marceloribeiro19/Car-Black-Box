@@ -6,8 +6,8 @@ const float C = 0;
 const float D = 0;
 const float u = 0;
 const float H = 1;
-const float Q = 0.1;
-const float R = 0.0001;
+const float Q = 0.005;
+const float R = 0.1;
 const float I = 1;
 
 float Kalman_Roll(float rawRoll, ASM330LHB *imu){

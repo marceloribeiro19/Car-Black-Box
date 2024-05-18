@@ -105,6 +105,12 @@ typedef struct imuStruct
     float temp_celsius;
     float gyro_dps[3];
     float acc_ms2[3];
+    /* ERROR MEMBERS*/
+    float AccErrorX;
+    float AccErrorY; 
+    float GyroErrorX;
+    float GyroErrorY;
+    float GyroErrorZ;
 
     /* COMPLEMENTARY FILTER */
     float thetaHat_rad;
@@ -114,8 +120,11 @@ typedef struct imuStruct
     volatile float Xant_Roll, Xant_Pitch, Xant_Yaw;
 	volatile float Pant_Roll, Pant_Pitch, Pant_Yaw;
 
+    char RollPitchYaw [66];
+
     /* MAGWICK FILTER */
     float q[4]; 
+    //float beta;
     float roll,pitch,yaw;
 
 
@@ -126,3 +135,4 @@ __u8 ASM330LHB_Init(ASM330LHB *imu, __u8 GYRO_ODR, __u8 ACC_ODR, __u8 GYRO_RANGE
 __u8 ASM330LHB_Process(ASM330LHB *imu);
 __u8 ASM330LHB_error(char *message, int file_descriptor) ;
 #endif /* __ASM330LHB_H__ */
+
