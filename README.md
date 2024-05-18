@@ -17,7 +17,7 @@ The ASM330LHB IMU (Inertial Measurement Unit) is designed for high-performance a
   - Utilizes the advanced capabilities of the ASM330LHB IMU for accurate and reliable orientation tracking.
 
 - **Integration with Raspberry Pi 4**:
-  - Optimized for seamless operation with the Raspberry Pi 4, leveraging its processing power and storage capabilities.
+  - Optimized for seamless operation with the Raspberry Pi 4 with a costume Buildroot Linux Image, leveraging its processing power and storage capabilities.
 
 ## Technical Specifications
 
@@ -26,24 +26,11 @@ The ASM330LHB IMU (Inertial Measurement Unit) is designed for high-performance a
 - **Update Frequency**: Continuous real-time updates.
 - **Replay Function**: Allows playback of stored data to replicate vehicle movements.
 
-## Installation and Setup
-
-1. **Hardware Connection**:
-   - Connect the ASM330LHB IMU to the Raspberry Pi 4 via I2C or SPI interface.
-
-2. **Software Installation**:
-   - Install necessary libraries and dependencies for interfacing with the IMU.
-   - Clone the driver repository from the provided source.
-
-3. **Configuration**:
-   - Configure the driver settings to match the specific requirements of your application.
-   - Set up the data logging parameters to ensure 15 minutes of orientation data storage.
-
 ## Usage
 
 1. **Real-Time Tracking**:
    - Initiate the driver to start real-time tracking of vehicle orientation.
-   - Data is continuously updated and stored in the Raspberry Pi 4's memory.
+   - Data is continuously updated and stored in the Raspberry Pi 4's memory card.
 
 2. **Replay Mode**:
    - In the event of a crash, activate "Replay Mode" to review and replicate the vehicle's movements leading up to the incident.
@@ -58,5 +45,3 @@ The ASM330LHB IMU (Inertial Measurement Unit) is designed for high-performance a
 ## Conclusion
 
 The ASM330LHB IMU driver for the Raspberry Pi 4 is a powerful tool for the automotive industry, offering precise orientation tracking and robust data logging capabilities. Its ability to replay vehicle movements in the event of a crash makes it an invaluable asset for accident analysis and safety improvement.
-
-For more detailed instructions on installation and configuration, please refer to the comprehensive user manual provided in the driver repository.
