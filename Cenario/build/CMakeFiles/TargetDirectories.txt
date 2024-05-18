@@ -1,3 +1,0 @@
-/home/marcelo/Desktop/Cenario/build/CMakeFiles/class1.dir
-/home/marcelo/Desktop/Cenario/build/CMakeFiles/edit_cache.dir
-/home/marcelo/Desktop/Cenario/build/CMakeFiles/rebuild_cache.dir
