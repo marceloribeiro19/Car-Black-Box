@@ -47,7 +47,7 @@ The ASM330LHB and BMI088 IMU are designed for high-performance automotive applic
 
 ## Conclusion
 
-The ASM330LHB and BMI088 IMUs are a powerful tool, offering precise orientation tracking and robust data logging capabilities. Although these, when applyed to the automotive industry are not reliable, since neither contain an magnetometer to help measure the Z-axis rotation of the car effectively. However it was possible to complete the project with the available accelerometer and gyroscope on both IMUs by ignoring the Z-axis rotation of the veicule and only dealing with X and Y values.
+The ASM330LHB and BMI088 IMUs are powerful tools, offering precise orientation tracking and robust data logging capabilities. Although these, when applyed to the automotive industry are not reliable, since neither contain an magnetometer to help measure the Z-axis rotation of the car effectively. However it was possible to complete the project with the available accelerometer and gyroscope on both IMUs by ignoring the Z-axis rotation of the veicule and only dealing with X and Y values.
 
 ## Some Demonstration videos are presented bellow:
 
