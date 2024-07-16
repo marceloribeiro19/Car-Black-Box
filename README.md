@@ -1,8 +1,8 @@
-# ASM330LHB IMU Driver for Automotive Applications
+# Black Box for Automotive Applications
 
 ## Overview
 
-The ASM330LHB IMU (Inertial Measurement Unit) is designed for high-performance automotive applications. This driver, tailored for the Raspberry Pi 4, offers robust data logging and real-time orientation tracking capabilities, ensuring that vehicle movements are continuously monitored and stored. 
+The ASM330LHB and BMI088 IMU are designed for high-performance automotive applications. This drivers, tailored for the Raspberry Pi 4, offer robust data logging and real-time orientation tracking capabilities, ensuring that vehicle movements are continuously monitored and stored. 
 
 ## Key Features
 
@@ -14,8 +14,7 @@ The ASM330LHB IMU (Inertial Measurement Unit) is designed for high-performance a
   - In the event of a car crash, the "Replay Mode" allows for precise replication of vehicle movements, aiding in accident analysis and reconstruction.
 
 - **High Performance**:
-  - Utilizes the advanced capabilities of the ASM330LHB IMU for accurate and reliable orientation tracking.
-  - Sensor fusion is achieved using the Madgwick filter for optimal performance.
+  - Sensor fusion is achieved using the Madgwick filter for optimal Euler angles or, in this case, quaternion values.
   - Data can be further filtered with a Kalman filter to enhance accuracy and reliability.
 
 - **Integration with Raspberry Pi 4**:
@@ -48,4 +47,13 @@ The ASM330LHB IMU (Inertial Measurement Unit) is designed for high-performance a
 
 ## Conclusion
 
-The ASM330LHB IMU driver for the Raspberry Pi 4 is a powerful tool for the automotive industry, offering precise orientation tracking and robust data logging capabilities. Its ability to replay vehicle movements in the event of a crash makes it an invaluable asset for accident analysis and safety improvement. Sensor fusion with the Madgwick filter and optional Kalman filter for data accuracy ensures reliable performance.
+The ASM330LHB and BMI088 IMUs are a powerful tool, offering precise orientation tracking and robust data logging capabilities. Although these, when applyed to the automotive industry are not reliable, since neither contain an magnetometer to help measure the Z-axis rotation of the car effectively. However it was possible to complete the project with the available accelerometer and gyroscope on both IMUs by ignoring the Z-axis rotation of the veicule and only dealing with X and Y values.
+
+## Some Demonstration videos are presented bellow:
+
+https://github.com/user-attachments/assets/b1f0b5a4-201c-4d5a-a2d6-d7317bd221bb
+
+
+
+https://github.com/user-attachments/assets/780a9504-2f6a-4e16-b68b-55b9c58bb7d3
+
