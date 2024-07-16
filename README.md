@@ -51,9 +51,13 @@ The ASM330LHB and BMI088 IMUs are a powerful tool, offering precise orientation 
 
 ## Some Demonstration videos are presented bellow:
 
+In the following video, the built PCBs were connected to the FPGA to evaluate the best IMU performance in order to use the most optimal one in the Raspberry Black Box system.
+
 https://github.com/user-attachments/assets/b1f0b5a4-201c-4d5a-a2d6-d7317bd221bb
 
 
+In the following video, the IMU is moved, and when a significant change in velocity occurs, a car crash event is detected, initiating a five-second countdown to fetch the post-crash data. After the five seconds have elapsed, the IMU is shown static on the table, and the replay begins, displaying the pre- and post-crash data.
 
-https://github.com/user-attachments/assets/780a9504-2f6a-4e16-b68b-55b9c58bb7d3
+https://github.com/user-attachments/assets/b6cfe311-e7ff-4221-8f6b-a17ea8f4d9fc
+
 
