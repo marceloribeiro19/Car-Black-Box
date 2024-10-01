@@ -158,7 +158,7 @@ static void *transmitData(void *arg){
                 }
             break;
         }    
-     /*VER ISTO*/   usleep(SAMPLE_TIME * 1e6); ////delays diferentes para os dois modos ////////////////////////////////////////////////////////////////////////
+        usleep(SAMPLE_TIME * 1e6); 
     }
     //Never gets here
     fclose(file);
